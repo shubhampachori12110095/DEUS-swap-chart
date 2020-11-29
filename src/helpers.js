@@ -7,8 +7,8 @@ const self = module.exports = {
      * @param {query.type} String
      * @param {query.symbol} String
      * @param {query.resolution} String
-     * @param {query.from} String
-     * @param {query.to} String
+     * @param {query.from} String UNIX // seconds
+     * @param {query.to} String UNIX // seconds
      * @output {url} String
      */
     buildUrlFromQuery: (query) => {
@@ -42,27 +42,17 @@ const self = module.exports = {
     },
 
     buildDatabaseURL: ({ symbol, pair, resolution, from, to } = query) => {
+
         const interval = {
-            "1": "1m",
-            "1m": "1m",
-            "5": "5m",
-            "5m": "5m",
-            "15": "15m",
-            "15m": "15m",
-            "30": "30m",
-            "30m": "30m",
-            "60": "1h",
-            "60m": "1h",
-            "D": "1d",
-            "1D": "1d",
-            "W": "1W",
-            "1W": "1W",
-            "M": "1M",
-            "1M": "1M"
+            "60": "60",
+            "60m": "60",
+            "D": "1440",
+            "1D": "1440",
         }[resolution]
 
-        // return `http://127.0.0.1:3000/candles?symbol=${symbol + pair}&interval=${interval}&from=${from}&to=${to}`
-        return `${process.env.DEUS_CANDLES_URL}/candles?symbol=${symbol + pair}&interval=${interval}&from=${from}&to=${to}`
+        if (!interval) return [] // TODO: fix this
+
+        return `${process.env.POSTGRESS_URL}/candles?format=json&from=${from}&to=${to}&resolution=${interval}`
 
     }
 }

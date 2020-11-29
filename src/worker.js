@@ -28,10 +28,10 @@ module.exports = class Worker {
 
         // Merge the exchanges
         const data = {
-            "DEUS_Swap": [
+            "DEUS Swap": [
               {
-                symbol: "ETH",
-                pair: "BTC"
+                symbol: "DEUS",
+                pair: "ETH"
               }
             ],
             SP500: sp500,
